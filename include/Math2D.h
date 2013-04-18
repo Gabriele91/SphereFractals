@@ -375,6 +375,13 @@ namespace Sphere{
 		Vector3D getRotatePoint(Vector3D & v);
 		///return matrix from quaternion
 		Matrix4x4 getMatrix();
+		//overload op
+		DFORCEINLINE const Quaternion operator +(const Quaternion &q) const{ 
+			return Quaternion(x+q.x, y+q.y, z+q.z,w+q.w);
+		}
+		DFORCEINLINE const Quaternion operator -(const Quaternion &q) const{ 
+			return Quaternion(x-q.x, y-q.y, z-q.z,w-q.w);
+		}
 		///////////////////////////////////////////////////////////////////////////
 		operator float* ()  {return &this->x;}
 		operator const float* () const {return &this->x;}

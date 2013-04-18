@@ -76,6 +76,7 @@
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\MainInstance.cpp" />
     <ClCompile Include="src\Math2D.cpp" />
+    <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Utility.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\MainInstance.h" />
     <ClInclude Include="include\Math2D.h" />
+    <ClInclude Include="include\Object.h" />
     <ClInclude Include="include\Screen.h" />
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\Types.h" />

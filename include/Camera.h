@@ -2,16 +2,16 @@
 #define CAMERA_H
 
 #include <Config.h>
-//#include <Object.h>
+#include <Object.h>
 
 
 namespace Sphere {
 
-	class Camera {
+	class Camera : public Object {
 
 	public:
 
-		Camera(){}
+		Camera():Object(){}
 
 	};
 

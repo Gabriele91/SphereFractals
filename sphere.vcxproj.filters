@@ -81,6 +81,9 @@
     <ClCompile Include="main.cpp">
       <Filter>File di risorse</Filter>
     </ClCompile>
+    <ClCompile Include="src\Object.cpp">
+      <Filter>File di origine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Application.h">
@@ -159,6 +162,9 @@
       <Filter>File di risorse</Filter>
     </ClInclude>
     <ClInclude Include="include\MainInstance.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
