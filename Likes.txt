@@ -6,3 +6,9 @@ http://www.ibiblio.org/e-notes/webgl/makin.html
 Sphere:
 
 http://www.webglearth.com/
+
+
+SACRED PDF:
+
+http://vterrain.org/LOD/spherical.html
+http://wissrech.iam.uni-bonn.de/research/pub/gerstner/globe.pdf
