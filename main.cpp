@@ -54,9 +54,9 @@ public:
                 *i++ = (r+1) * sectors + s;
         }
     }
-    void draw(bool lines=false){		
+    void draw(bool lines=false){
 		//
-		if(lines) 
+		if(lines)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//
         glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
@@ -68,10 +68,10 @@ public:
 };
 
 class SphereInstance : public MainInstance,
-							  Input::KeyboardHandler, 
+							  Input::KeyboardHandler,
 							  Input::MouseHandler{
 
-	
+
 	float projectionAngle;
 	Matrix4x4 projection;
 	void setProjection(float angle,float n,float f){
@@ -80,16 +80,16 @@ class SphereInstance : public MainInstance,
 			(float)
 			(Application::instance()->getScreen()->getWidth())/
 			(Application::instance()->getScreen()->getHeight()),n,f);
-		//update projection		
-		glMatrixMode(GL_PROJECTION);		
-		glLoadMatrixf(projection);	
+		//update projection
+		glMatrixMode(GL_PROJECTION);
+		glLoadMatrixf(projection);
 	}
 
 public:
 
 	SolidSphere sphere;
 	Camera camera;
-	
+
 	SphereInstance()
 		:MainInstance("Sphere",1280,720)
 		,sphere(1, 12, 24){}
@@ -101,12 +101,12 @@ public:
 		Application::instance()->getInput()->addHandler((Input::MouseHandler*)this);
 		/////////////////////////////////////////////
 		//OPENGL
-		//view port 		
-		glViewport(0, 0, Application::instance()->getScreen()->getWidth(), 
-						 Application::instance()->getScreen()->getHeight());		
+		//view port
+		glViewport(0, 0, Application::instance()->getScreen()->getWidth(),
+						 Application::instance()->getScreen()->getHeight());
 		//enable culling
-		glEnable( GL_CULL_FACE );        
-		glCullFace( GL_BACK ); 
+		glEnable( GL_CULL_FACE );
+		glCullFace( GL_BACK );
 		//set projection matrix
 		projectionAngle=45.0f;
 		setProjection(projectionAngle,0.1f,1000.0f);
@@ -122,16 +122,16 @@ public:
 		camera.setPosition(Vec3(0,0,-20));
 	}
 
-	
+
 	void run(float dt){
 		//clear
 		glClearColor(0.25f, 0.5f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		//reset model view matrix
-		glMatrixMode(GL_MODELVIEW);				
-		glLoadMatrixf(camera.getGlobalMatrix());	
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(camera.getGlobalMatrix());
 		//draw
-		sphere.draw();
+		sphere.draw(true);
 	}
 	void end(){
 	}

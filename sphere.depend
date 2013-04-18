@@ -1,0 +1,231 @@
+# depslib dependency file v1.0
+1366318456 source:/home/gabriele/github/SphereFractals/src/Application.cpp
+	<stdafx.h>
+	<Application.h>
+	<WindowsApp.h>
+	<LinuxApp.h>
+
+1366279931 /home/gabriele/github/SphereFractals//stdafx.h
+	<Config.h>
+
+1366302005 /home/gabriele/github/SphereFractals/include/Config.h
+	<cmath>
+	<cassert>
+	<cstdlib>
+	<ctime>
+	<cstring>
+	<cfloat>
+	<climits>
+	<cstdlib>
+	<list>
+	<vector>
+	<string>
+	<algorithm>
+	<sstream>
+	<sys/types.h>
+	<sys/stat.h>
+	<Types.h>
+	<map>
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<window/OpenGLWindow.h>
+	<AL/al.h>
+	<AL/alc.h>
+	<GL/glew.h>
+	<GL/glx.h>
+	<GL/glext.h>
+	<GL/gl.h>
+	"TargetConditionals.h"
+	<stdint.h>
+	<AL/al.h>
+	<AL/alc.h>
+	<android/log.h>
+	<android/native_activity.h>
+	<android_native_app_glue.h>
+	<utility>
+	<unordered_map>
+	<functional>
+	<memory>
+	<tr1/unordered_map>
+	<tr1/functional>
+	<tr1/memory>
+
+1366279931 /home/gabriele/github/SphereFractals/include/Types.h
+
+1366279931 /home/gabriele/github/SphereFractals/include/window/OpenGLWindow.h
+	<gletx_header.h>
+
+1366279931 /home/gabriele/github/SphereFractals/include/Application.h
+	<Config.h>
+	<MainInstance.h>
+	<EString.h>
+	<Screen.h>
+	<Input.h>
+
+1366279931 /home/gabriele/github/SphereFractals/include/MainInstance.h
+	<Config.h>
+	<Types.h>
+	<Screen.h>
+	<EString.h>
+
+1366279931 /home/gabriele/github/SphereFractals/include/Screen.h
+	<Config.h>
+	<MainInstance.h>
+	<Application.h>
+
+1366279931 /home/gabriele/github/SphereFractals/include/EString.h
+	<Config.h>
+
+1366279931 /home/gabriele/github/SphereFractals/include/Input.h
+	<Config.h>
+	<Debug.h>
+	<Math2D.h>
+
+1366279931 /home/gabriele/github/SphereFractals/include/Debug.h
+	<Config.h>
+	<ostream>
+
+1366301084 /home/gabriele/github/SphereFractals/include/Math2D.h
+	<Config.h>
+	<EString.h>
+
+1366279931 source:/home/gabriele/github/SphereFractals/src/Camera.cpp
+	<stdafx.h>
+	"Camera.h"
+
+1366279931 /home/gabriele/github/SphereFractals/include/Camera.h
+	<Config.h>
+	<Object.h>
+
+1366279931 /home/gabriele/github/SphereFractals/include/Object.h
+	<Config.h>
+	<Math2D.h>
+
+1366301280 source:/home/gabriele/github/SphereFractals/src/Debug.cpp
+	<stdafx.h>
+	<Debug.h>
+	<EString.h>
+	<iostream>
+	<signal.h>
+
+1366279931 source:/home/gabriele/github/SphereFractals/src/EString.cpp
+	<stdafx.h>
+	<stdafx.h>
+	<EString.h>
+
+1366301366 source:/home/gabriele/github/SphereFractals/src/ETime.cpp
+	<stdafx.h>
+	<ETime.h>
+	<sys/time.h>
+
+1366279931 /home/gabriele/github/SphereFractals/include/ETime.h
+	<Config.h>
+	<Types.h>
+
+1366279931 source:/home/gabriele/github/SphereFractals/src/Image/lodepng.cpp
+	<stdafx.h>
+	"lodepng.h"
+	<stdio.h>
+	<stdlib.h>
+	<fstream>
+
+1366279931 /home/gabriele/github/SphereFractals/src/Image/lodepng.h
+	<string.h>
+	<vector>
+	<string>
+	"lodepng.h"
+	<iostream>
+	"lodepng.h"
+
+1366279931 source:/home/gabriele/github/SphereFractals/src/Input.cpp
+	<stdafx.h>
+	<Input.h>
+
+1366279931 source:/home/gabriele/github/SphereFractals/src/MainInstance.cpp
+	<stdafx.h>
+	<MainInstance.h>
+
+1366301801 source:/home/gabriele/github/SphereFractals/src/Math2D.cpp
+	<stdafx.h>
+	<Math2D.h>
+
+1366279931 source:/home/gabriele/github/SphereFractals/src/Object.cpp
+	<stdafx.h>
+	<Object.h>
+
+1366279931 source:/home/gabriele/github/SphereFractals/src/Screen.cpp
+	<stdafx.h>
+	<Screen.h>
+
+1366279931 source:/home/gabriele/github/SphereFractals/src/Timer.cpp
+	<stdafx.h>
+	<Timer.h>
+
+1366279931 /home/gabriele/github/SphereFractals/include/Timer.h
+	<Config.h>
+	<Types.h>
+	<ETime.h>
+
+1366301879 source:/home/gabriele/github/SphereFractals/src/Utility.cpp
+	<stdafx.h>
+	<Utility.h>
+	<Application.h>
+	<sys/stat.h>
+	<unistd.h>
+	<dirent.h>
+	<limits.h>
+	<errno.h>
+	<sys/stat.h>
+
+1366279931 /home/gabriele/github/SphereFractals/include/Utility.h
+	<Config.h>
+	<EString.h>
+
+1366312494 source:/home/gabriele/github/SphereFractals/src/linux/LinuxApp.cpp
+	"stdafx.h"
+	<Timer.h>
+	<LinuxApp.h>
+	<LinuxScreen.h>
+	<LinuxInput.h>
+	<Debug.h>
+	<sys/time.h>
+
+1366280586 /home/gabriele/github/SphereFractals/include/linux/LinuxApp.h
+	<Config.h>
+	<Application.h>
+	<MainInstance.h>
+
+1366318351 /home/gabriele/github/SphereFractals/include/linux/LinuxScreen.h
+	<X11/Xlib.h>
+	<X11/Xatom.h>
+	<X11/keysym.h>
+	<X11/extensions/xf86vmode.h>
+	<Config.h>
+	<LinuxApp.h>
+	<EString.h>
+	<Screen.h>
+
+1366312474 /home/gabriele/github/SphereFractals/include/linux/LinuxInput.h
+	<Config.h>
+	<Math2D.h>
+	<Input.h>
+	<LinuxApp.h>
+
+1366319317 source:/home/gabriele/github/SphereFractals/main.cpp
+	<stdafx.h>
+	<Application.h>
+	<MainInstance.h>
+	<Camera.h>
+	<Math2D.h>
+
+1366319139 source:/home/gabriele/github/SphereFractals/src/linux/LinuxScreen.cpp
+	<LinuxScreen.h>
+
+1366314420 source:/home/gabriele/github/SphereFractals/src/linux/LinuxInput.cpp
+	<LinuxInput.h>
+	<Input.h>
+	<X11/Xlib.h>
+	<X11/keysym.h>
+	<X11/keysymdef.h>
+

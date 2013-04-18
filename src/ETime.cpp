@@ -1,5 +1,8 @@
 #include <stdafx.h>
 #include <ETime.h>
+#ifdef PLATFORM_UNIX
+    #include <sys/time.h>
+#endif
 //cpu Ticks
 extern Sphere::bit64 Sphere::GetTimeTicks(){
 	Sphere::bit64 val;
@@ -10,7 +13,7 @@ extern Sphere::bit64 Sphere::GetTimeTicks(){
 
 		gettimeofday( &timeVal, NULL );
 
-		val = (I64)timeVal.tv_sec * (1000*1000) + (I64)timeVal.tv_usec;
+		val = (Sphere::bit64)timeVal.tv_sec * (1000*1000) + (Sphere::bit64)timeVal.tv_usec;
 	#endif
 	return val;
 }

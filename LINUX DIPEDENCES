@@ -1,0 +1,15 @@
+#compiler
+gcc
+g++
+
+#X11 (fullscreen)
+libxxf86vm-dev
+
+#openGL
+mesa-common-dev
+libglew-dev
+
+#openAL 
+libopenal-dev
+
+

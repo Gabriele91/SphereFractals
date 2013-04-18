@@ -1,10 +1,11 @@
 #include <stdafx.h>
 #include <Application.h>
-#if defined( PLATFORM_IOS ) 
+#if defined( PLATFORM_IOS )
 #elif defined( PLATFORM_OSX )
 #elif defined( PLATFORM_WINDOW )
 #include <WindowsApp.h>
 #elif defined( PLATFORM_LINUX )
+#include <LinuxApp.h>
 #elif defined( PLATFORM_ANDROID )
 #endif
 ///////////////////////
@@ -13,7 +14,7 @@ using namespace Sphere;
 Application *Application::appSingleton=NULL;
 ///////////////////////
 Application::Application()
-	:mainInstance(NULL)	
+	:mainInstance(NULL)
 	,screen(NULL)
 	,input(NULL)
 	,audio(NULL){
@@ -24,15 +25,16 @@ Application::~Application(){
 
 }
 
-Application *Application::create(){	
+Application *Application::create(){
 
 	DEBUG_ASSERT(!appSingleton);
 
-#if defined( PLATFORM_IOS ) 
+#if defined( PLATFORM_IOS )
 #elif defined( PLATFORM_OSX )
 #elif defined( PLATFORM_WINDOW )
 	appSingleton=new WindowsApp();
 #elif defined( PLATFORM_LINUX )
+	appSingleton=new LinuxApp();
 #elif defined( PLATFORM_ANDROID )
 #endif
 
