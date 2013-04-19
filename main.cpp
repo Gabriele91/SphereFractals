@@ -91,7 +91,7 @@ public:
 	Camera camera;
 
 	SphereInstance()
-		:MainInstance("Sphere",1280,720)
+		:MainInstance("Sphere",1280,800,32,60,false)
 		,sphere(1, 12, 24){}
 
 

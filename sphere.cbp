@@ -15,6 +15,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-std=gnu++0x" />
+					<Add option="-D_DEBUG" />
 					<Add directory="./" />
 					<Add directory="include" />
 					<Add directory="include/linux" />

@@ -94,7 +94,9 @@ namespace Sphere {
         Window                  window;
         GLXContext              context;
         XSetWindowAttributes    winAttr;
-        unsigned char           doubleBuffered;
+        uchar           doubleBuffered;
+        uint            bitesOpenGL;
+        String          appname;
         //original desktopMode
         XF86VidModeModeInfo     desktopMode;
 		///////////////////////////////////

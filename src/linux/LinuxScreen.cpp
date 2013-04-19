@@ -23,10 +23,11 @@ LinuxScreen::LinuxScreen()
 void LinuxScreen::__createGLXContext(uint bites){
 	///////////////////////////////////////////////////////////
     //SETUP openGL
+    bitesOpenGL=bites<24?bites:24;
 	///////////////////////////////////////////////////////////
     //SET BUFFERS
     int bufferOpenGL[]={  GLX_RGBA,
-                          GLX_DEPTH_SIZE, bites<24?bites:24,
+                          GLX_DEPTH_SIZE, bitesOpenGL,
                           GLX_DOUBLEBUFFER,
                           None };
     //setup color map
@@ -35,21 +36,21 @@ void LinuxScreen::__createGLXContext(uint bites){
         bufferOpenGL[3]=None;//diable GLX_DOUBLEBUFFER
         visual  = glXChooseVisual(display, screen,  bufferOpenGL );
         doubleBuffered = false;
-        DEBUG_MESSAGE("singlebuffered rendering will be used, no doublebuffering available\n");
+        DEBUG_MESSAGE("singlebuffered rendering will be used, no doublebuffering available");
     }
     else{
         doubleBuffered = true;
-        DEBUG_MESSAGE("doublebuffered rendering available\n");
+        DEBUG_MESSAGE("doublebuffered rendering available");
     }
-    DEBUG_ASSERT(visual); 
+    DEBUG_ASSERT(visual);
 	///////////////////////////////////////////////////////////
 	//get openGL version
 	int glxMajor, glxMinor;
     glXQueryVersion(display, &glxMajor, &glxMinor);
-	DEBUG_MESSAGE("openGL rendering :"<<glxMajor<<"."<<glxMinor<<"\n");
+	DEBUG_MESSAGE("openGL rendering :"<<glxMajor<<"."<<glxMinor);
     // create a GLX context
-    context = glXCreateContext(display, visual , 0, GL_TRUE);   
-    DEBUG_ASSERT(context); 
+    context = glXCreateContext(display, visual , 0, GL_TRUE);
+    DEBUG_ASSERT(context);
 	///////////////////////////////////////////////////////////
     //COLOR MAP WINDOW
     Colormap cmap;
@@ -63,24 +64,24 @@ void LinuxScreen::__createGLXContext(uint bites){
     winAttr.border_pixel = 0;
 	///////////////////////////////////////////////////////////
 }
-void __deleteGLXContext(){
+void LinuxScreen::__deleteGLXContext(){
 
     DEBUG_ASSERT(context);
-	
+
 	if( !glXMakeCurrent(display, None, NULL)){
 		DEBUG_MESSAGE("Could not release drawing context.\n");
 	}
 	// destroy the context
 	glXDestroyContext(display, context);
 	context = NULL;
-		
+
 }
 void LinuxScreen::__createFullScreenWindow(){
         //set fullscreen=true
         fullscreen=true;
         //set fullscreen
         XF86VidModeModeInfo **modes;
-        int modeNum, bestMode;
+        int modeNum, bestMode=-1;
         //get info
         XF86VidModeGetAllModeLines(display,screen, &modeNum, &modes);
         // save desktop-resolution before switching modes
@@ -89,6 +90,9 @@ void LinuxScreen::__createFullScreenWindow(){
         for (int i = 0; i < modeNum; i++)
             if ((modes[i]->hdisplay == screenWidth) && (modes[i]->vdisplay == screenHeight))
                 bestMode = i;
+        //////////////////////////////////////////////////////////////////////////////
+        DEBUG_ASSERT_MSG(bestMode!=-1,"error : full-screen resolution not supported");
+        //////////////////////////////////////////////////////////////////////////////
         //witch to fullscreen
         XF86VidModeSwitchToMode(display, screen, modes[bestMode]);
         XF86VidModeSetViewPort(display, screen, 0, 0);
@@ -104,7 +108,7 @@ void LinuxScreen::__createFullScreenWindow(){
                                0, 0,
                                nativeWidth,
                                nativeHeight, 0,
-                               bites,
+                               bitesOpenGL,
                                InputOutput,
                                visual->visual,
                                CWBorderPixel | CWColormap | CWEventMask | CWOverrideRedirect,
@@ -122,8 +126,8 @@ void LinuxScreen::__createWindow(){
         window =
         XCreateWindow(display, RootWindow(display, visual ->screen),
                         0, 0,
-                        width,
-                        height,
+                        screenWidth,
+                        screenHeight,
                         0,
                         visual ->depth,
                         InputOutput,
@@ -145,8 +149,8 @@ void LinuxScreen::__createWindow(){
         //disable resize
         XSizeHints size_hints;
         size_hints.flags = PSize | PMinSize | PMaxSize;
-        size_hints.min_height = size_hints.max_height = height;
-        size_hints.min_width  = size_hints.max_width  = width;
+        size_hints.min_height = size_hints.max_height = screenHeight;
+        size_hints.min_width  = size_hints.max_width  = screenWidth;
         XSetWMNormalHints(display,window,&size_hints);
 }
 void LinuxScreen::__deleteWindow(){
@@ -161,19 +165,20 @@ void LinuxScreen::__deleteWindow(){
 /**
 * open a window
 */
-void LinuxScreen::createWindow(const char* appname,
+void LinuxScreen::createWindow(const char* argappname,
                                   uint width,
                                   uint height,
                                   uint bites,
                                   uint freamPerSecond,
                                   bool fullscreen){
+
+    appname=argappname;
     screenWidth= width;
     screenHeight= height;
     this->freamPerSecond=freamPerSecond;
     //x11 values
     //get screen
     screen = DefaultScreen(display);
-    DEBUG_ASSERT(screen);
 	//create openGL context
 	__createGLXContext(bites);
     //set fullscreen

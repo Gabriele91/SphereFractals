@@ -191,12 +191,12 @@
 	<Debug.h>
 	<sys/time.h>
 
-1366280586 /home/gabriele/github/SphereFractals/include/linux/LinuxApp.h
+1366325485 /home/gabriele/github/SphereFractals/include/linux/LinuxApp.h
 	<Config.h>
 	<Application.h>
 	<MainInstance.h>
 
-1366318351 /home/gabriele/github/SphereFractals/include/linux/LinuxScreen.h
+1366325852 /home/gabriele/github/SphereFractals/include/linux/LinuxScreen.h
 	<X11/Xlib.h>
 	<X11/Xatom.h>
 	<X11/keysym.h>
@@ -212,17 +212,17 @@
 	<Input.h>
 	<LinuxApp.h>
 
-1366319317 source:/home/gabriele/github/SphereFractals/main.cpp
+1366357205 source:/home/gabriele/github/SphereFractals/main.cpp
 	<stdafx.h>
 	<Application.h>
 	<MainInstance.h>
 	<Camera.h>
 	<Math2D.h>
 
-1366319139 source:/home/gabriele/github/SphereFractals/src/linux/LinuxScreen.cpp
+1366326589 source:/home/gabriele/github/SphereFractals/src/linux/LinuxScreen.cpp
 	<LinuxScreen.h>
 
-1366314420 source:/home/gabriele/github/SphereFractals/src/linux/LinuxInput.cpp
+1366325485 source:/home/gabriele/github/SphereFractals/src/linux/LinuxInput.cpp
 	<LinuxInput.h>
 	<Input.h>
 	<X11/Xlib.h>
