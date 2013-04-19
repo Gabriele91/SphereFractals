@@ -1,4 +1,4 @@
-#ifndef WINDOWSAPP_H
+﻿#ifndef WINDOWSAPP_H
 #define WINDOWSAPP_H
 
 #include <Config.h>
@@ -23,7 +23,7 @@ namespace Sphere {
 		*/
 		virtual bool loadData(const String& path,void*& ptr,size_t &len);
 		/**
-		* where you can seve files data
+		* where you can save files data
 		* @return path
 		*/
 		virtual String appDataDirectory();

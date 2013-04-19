@@ -97,6 +97,13 @@ namespace Sphere {
         unsigned char           doubleBuffered;
         //original desktopMode
         XF86VidModeModeInfo     desktopMode;
+		///////////////////////////////////
+		XVisualInfo *  visual;
+		void  __createGLXContext(uint bites);
+		void __deleteGLXContext();
+		void __createFullScreenWindow();
+		void __createWindow();
+		void __deleteWindow();
         ///////////////////////////////////
 		//datas:
 		uint nativeWidth;

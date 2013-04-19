@@ -278,7 +278,8 @@ void LinuxInput::update(){
     }
 
 }
-//calls
+
+//keyboard
 void LinuxInput::__callOnKeyPress(Key::Keyboard key) {
 	for(auto ih : vkeyboardh )
 		ih->onKeyPress(key);

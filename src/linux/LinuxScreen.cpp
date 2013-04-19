@@ -18,64 +18,12 @@ LinuxScreen::LinuxScreen()
     //get size screen
 	nativeWidth = XWidthOfScreen(XDefaultScreenOfDisplay(display));
 	nativeHeight = XHeightOfScreen(XDefaultScreenOfDisplay(display));
-
 }
-/**
-* set fullscreen mode
-*/
-void LinuxScreen::setFullscreen(bool fullscreen){
-    //save
-    this->fullscreen=fullscreen;
-    if(fullscreen){
-        //values
-        XF86VidModeModeInfo **modes;
-        int modeNum, bestMode;
-        //get info
-        XF86VidModeGetAllModeLines(display,screen, &modeNum, &modes);
-        // save desktop-resolution before switching modes
-        desktopMode = *modes[0];
-        //look for mode with requested resolution
-        for (int i = 0; i < modeNum; i++)
-            if ((modes[i]->hdisplay == screenWidth) && (modes[i]->vdisplay == screenHeight))
-                bestMode = i;
-        //witch to fullscreen
-        XF86VidModeSwitchToMode(display, screen, modes[bestMode]);
-        XF86VidModeSetViewPort(display, screen, 0, 0);
-        nativeWidth = modes[bestMode]->hdisplay;
-        nativeHeight = modes[bestMode]->vdisplay;
-        DEBUG_MESSAGE("resolution : "<<nativeWidth<<"x"<<nativeHeight);
-        XFree(modes);
-
-    }
-    else{
-        XF86VidModeSwitchToMode(display, screen, &desktopMode);
-        XF86VidModeSetViewPort(display, screen, 0, 0);
-    }
-
-}
-/**
-* open a window
-*/
-void LinuxScreen::createWindow(const char* appname,
-                                  uint width,
-                                  uint height,
-                                  uint bites,
-                                  uint freamPerSecond,
-                                  bool fullscreen){
-    screenWidth= width;
-    screenHeight= height;
-    this->freamPerSecond=freamPerSecond;
-    //x11 values
-    XVisualInfo *visual ;
-    Colormap cmap;
-    int i, dpyWidth, dpyHeight;
-    int glxMajor, glxMinor, vmMajor, vmMinor;
-    //get screen
-    screen = DefaultScreen(display);
-    DEBUG_ASSERT(screen);
-    //query
-    XF86VidModeQueryVersion(display, &vmMajor, &vmMinor);
-    //setup openGL
+///////////////////////////////////////////////////////////
+void LinuxScreen::__createGLXContext(uint bites){
+	///////////////////////////////////////////////////////////
+    //SETUP openGL
+	///////////////////////////////////////////////////////////
     //SET BUFFERS
     int bufferOpenGL[]={  GLX_RGBA,
                           GLX_DEPTH_SIZE, bites<24?bites:24,
@@ -93,23 +41,61 @@ void LinuxScreen::createWindow(const char* appname,
         doubleBuffered = true;
         DEBUG_MESSAGE("doublebuffered rendering available\n");
     }
+    DEBUG_ASSERT(visual); 
+	///////////////////////////////////////////////////////////
+	//get openGL version
+	int glxMajor, glxMinor;
     glXQueryVersion(display, &glxMajor, &glxMinor);
+	DEBUG_MESSAGE("openGL rendering :"<<glxMajor<<"."<<glxMinor<<"\n");
     // create a GLX context
-    context = glXCreateContext(display, visual , 0, GL_TRUE);
+    context = glXCreateContext(display, visual , 0, GL_TRUE);   
+    DEBUG_ASSERT(context); 
+	///////////////////////////////////////////////////////////
+    //COLOR MAP WINDOW
+    Colormap cmap;
     // create a color map
     cmap = XCreateColormap(display,
                            RootWindow(display, visual->screen),
                            visual ->visual,
                            AllocNone);
-
-    DEBUG_ASSERT(context);
     //set att....
     winAttr.colormap = cmap;
     winAttr.border_pixel = 0;
-    //set fullscreen
-    if (fullscreen){
+	///////////////////////////////////////////////////////////
+}
+void __deleteGLXContext(){
+
+    DEBUG_ASSERT(context);
+	
+	if( !glXMakeCurrent(display, None, NULL)){
+		DEBUG_MESSAGE("Could not release drawing context.\n");
+	}
+	// destroy the context
+	glXDestroyContext(display, context);
+	context = NULL;
+		
+}
+void LinuxScreen::__createFullScreenWindow(){
+        //set fullscreen=true
+        fullscreen=true;
         //set fullscreen
-        setFullscreen(true);
+        XF86VidModeModeInfo **modes;
+        int modeNum, bestMode;
+        //get info
+        XF86VidModeGetAllModeLines(display,screen, &modeNum, &modes);
+        // save desktop-resolution before switching modes
+        desktopMode = *modes[0];
+        //look for mode with requested resolution
+        for (int i = 0; i < modeNum; i++)
+            if ((modes[i]->hdisplay == screenWidth) && (modes[i]->vdisplay == screenHeight))
+                bestMode = i;
+        //witch to fullscreen
+        XF86VidModeSwitchToMode(display, screen, modes[bestMode]);
+        XF86VidModeSetViewPort(display, screen, 0, 0);
+        nativeWidth = modes[bestMode]->hdisplay;
+        nativeHeight = modes[bestMode]->vdisplay;
+        DEBUG_MESSAGE("resolution : "<<nativeWidth<<"x"<<nativeHeight);
+        XFree(modes);
         //set window attributes
         winAttr.override_redirect = True;
         winAttr.event_mask = WINDOW_ATTRIBUTE;
@@ -127,8 +113,10 @@ void LinuxScreen::createWindow(const char* appname,
         XMapRaised(display, window);
         XGrabKeyboard(display, window, 1, GrabModeAsync,GrabModeAsync, CurrentTime);
         XGrabPointer(display, window, 1, ButtonPressMask,GrabModeAsync, GrabModeAsync, window, None, CurrentTime);
-    }
-    else{
+}
+void LinuxScreen::__createWindow(){
+        //set fullscreen=false
+        fullscreen=false;
         //create a window in window mode
         winAttr.event_mask = WINDOW_ATTRIBUTE;
         window =
@@ -160,8 +148,39 @@ void LinuxScreen::createWindow(const char* appname,
         size_hints.min_height = size_hints.max_height = height;
         size_hints.min_width  = size_hints.max_width  = width;
         XSetWMNormalHints(display,window,&size_hints);
-        //
+}
+void LinuxScreen::__deleteWindow(){
+    // switch back to original desktop resolution if we were in fullscreen
+    if( fullscreen ){
+        XF86VidModeSwitchToMode(display, screen, &(desktopMode));
+        XF86VidModeSetViewPort(display, screen, 0, 0);
     }
+    XCloseDisplay(display);
+}
+///////////////////////////////////////////////////////////
+/**
+* open a window
+*/
+void LinuxScreen::createWindow(const char* appname,
+                                  uint width,
+                                  uint height,
+                                  uint bites,
+                                  uint freamPerSecond,
+                                  bool fullscreen){
+    screenWidth= width;
+    screenHeight= height;
+    this->freamPerSecond=freamPerSecond;
+    //x11 values
+    //get screen
+    screen = DefaultScreen(display);
+    DEBUG_ASSERT(screen);
+	//create openGL context
+	__createGLXContext(bites);
+    //set fullscreen
+    if(fullscreen)
+		__createFullScreenWindow();
+	else
+		__createWindow();
     // connect the glx-context to the window
     glXMakeCurrent(display, window, context);
 }
@@ -169,7 +188,20 @@ void LinuxScreen::createWindow(const char* appname,
 * close window
 */
 void LinuxScreen::closeWindow(){
-
+	__deleteGLXContext();
+	__deleteWindow();
+}
+/**
+* set fullscreen mode
+*/
+void LinuxScreen::setFullscreen(bool argfullscreen){
+	if(fullscreen!=argfullscreen){
+		__deleteWindow();
+		if(fullscreen)
+			__createFullScreenWindow();
+		else
+			__createWindow();
+	}
 }
 /**
 * return screen width
