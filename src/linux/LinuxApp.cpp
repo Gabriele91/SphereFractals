@@ -13,7 +13,7 @@ LinuxApp::LinuxApp()
 	screen=(Screen*)new LinuxScreen();
 	input=(Input*)new LinuxInput();
 	//not exit form loop
-	doexit=true;
+	doexit=false;
 }
 
 LinuxApp::~LinuxApp(){

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1366318456 source:/home/gabriele/github/SphereFractals/src/Application.cpp
+1366383076 source:/home/gabriele/github/SphereFractals/src/Application.cpp
 	<stdafx.h>
 	<Application.h>
 	<WindowsApp.h>
@@ -8,7 +8,7 @@
 1366279931 /home/gabriele/github/SphereFractals//stdafx.h
 	<Config.h>
 
-1366302005 /home/gabriele/github/SphereFractals/include/Config.h
+1366390404 /home/gabriele/github/SphereFractals/include/Config.h
 	<cmath>
 	<cassert>
 	<cstdlib>
@@ -30,12 +30,10 @@
 	<GL/gl.h>
 	<GL/glu.h>
 	<window/OpenGLWindow.h>
+	<GL/gl.h>
+	<linux/OpenGLLinux.h>
 	<AL/al.h>
 	<AL/alc.h>
-	<GL/glew.h>
-	<GL/glx.h>
-	<GL/glext.h>
-	<GL/gl.h>
 	"TargetConditionals.h"
 	<stdint.h>
 	<AL/al.h>
@@ -56,7 +54,7 @@
 1366279931 /home/gabriele/github/SphereFractals/include/window/OpenGLWindow.h
 	<gletx_header.h>
 
-1366279931 /home/gabriele/github/SphereFractals/include/Application.h
+1366383076 /home/gabriele/github/SphereFractals/include/Application.h
 	<Config.h>
 	<MainInstance.h>
 	<EString.h>
@@ -182,8 +180,7 @@
 	<Config.h>
 	<EString.h>
 
-1366312494 source:/home/gabriele/github/SphereFractals/src/linux/LinuxApp.cpp
-	"stdafx.h"
+1366383178 source:/home/gabriele/github/SphereFractals/src/linux/LinuxApp.cpp
 	<Timer.h>
 	<LinuxApp.h>
 	<LinuxScreen.h>
@@ -191,12 +188,12 @@
 	<Debug.h>
 	<sys/time.h>
 
-1366325485 /home/gabriele/github/SphereFractals/include/linux/LinuxApp.h
+1366383141 /home/gabriele/github/SphereFractals/include/linux/LinuxApp.h
 	<Config.h>
 	<Application.h>
 	<MainInstance.h>
 
-1366325852 /home/gabriele/github/SphereFractals/include/linux/LinuxScreen.h
+1366383076 /home/gabriele/github/SphereFractals/include/linux/LinuxScreen.h
 	<X11/Xlib.h>
 	<X11/Xatom.h>
 	<X11/keysym.h>
@@ -212,14 +209,15 @@
 	<Input.h>
 	<LinuxApp.h>
 
-1366357205 source:/home/gabriele/github/SphereFractals/main.cpp
+1366385100 source:/home/gabriele/github/SphereFractals/main.cpp
 	<stdafx.h>
 	<Application.h>
 	<MainInstance.h>
 	<Camera.h>
 	<Math2D.h>
+	<TheSphere.h>
 
-1366326589 source:/home/gabriele/github/SphereFractals/src/linux/LinuxScreen.cpp
+1366390619 source:/home/gabriele/github/SphereFractals/src/linux/LinuxScreen.cpp
 	<LinuxScreen.h>
 
 1366325485 source:/home/gabriele/github/SphereFractals/src/linux/LinuxInput.cpp
@@ -228,4 +226,17 @@
 	<X11/Xlib.h>
 	<X11/keysym.h>
 	<X11/keysymdef.h>
+
+1366390589 /home/gabriele/github/SphereFractals/include/linux/OpenGLLinux.h
+	<GL/glx.h>
+	<GL/glext.h>
+
+1366385100 /home/gabriele/github/SphereFractals//TheSphere.h
+	<Config.h>
+	<Math2D.h>
+
+1366390607 source:/home/gabriele/github/SphereFractals/src/linux/OpenGLLinux.cpp
+	<stdafx.h>
+	<OpenGLLinux.h>
+	<Debug.h>
 

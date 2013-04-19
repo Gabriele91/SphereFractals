@@ -43,12 +43,10 @@
 	#define PLATFORM_UNIX
 	#define DCPP_11
 	#define ENABLE_VAOS
+	#include <GL/gl.h>
+	#include <linux/OpenGLLinux.h>
 	#include <AL/al.h>
 	#include <AL/alc.h>
-	#include <GL/glew.h>
-	#include <GL/glx.h>
-	#include <GL/glext.h>
-	#include <GL/gl.h>
 #elif defined(__APPLE__)
     #include "TargetConditionals.h"
 	#define PLATFORM_UNIX
@@ -83,6 +81,7 @@
 #ifdef _MSC_VER
 	#define DFORCEINLINE __forceinline
 	#define DINLINE __inline
+	#define COMPILER_VISUAL_STUDIO
 
 	#if _MSC_VER == 1600
 		#include <utility>
@@ -93,6 +92,7 @@
 #elif __GNUC__>=4 && __GNUC_MINOR__ >=6
 	#define DFORCEINLINE __attribute__ ((always_inline))
 	#define DINLINE inline
+	#define COMPILER_GCC
 #else
 	#error "compiler not supported"
 #endif

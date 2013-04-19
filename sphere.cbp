@@ -72,11 +72,7 @@
 		<Unit filename="include/linux/LinuxApp.h" />
 		<Unit filename="include/linux/LinuxInput.h" />
 		<Unit filename="include/linux/LinuxScreen.h" />
-		<Unit filename="include/window/OpenGLWindow.h" />
-		<Unit filename="include/window/WindowsApp.h" />
-		<Unit filename="include/window/WindowsInput.h" />
-		<Unit filename="include/window/WindowsScreen.h" />
-		<Unit filename="include/window/gletx_header.h" />
+		<Unit filename="include/linux/OpenGLLinux.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Application.cpp" />
 		<Unit filename="src/Camera.cpp" />
@@ -105,6 +101,7 @@
 		<Unit filename="src/linux/LinuxApp.cpp" />
 		<Unit filename="src/linux/LinuxInput.cpp" />
 		<Unit filename="src/linux/LinuxScreen.cpp" />
+		<Unit filename="src/linux/OpenGLLinux.cpp" />
 		<Unit filename="stdafx.h" />
 		<Extensions>
 			<code_completion />

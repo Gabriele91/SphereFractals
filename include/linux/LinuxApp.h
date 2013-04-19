@@ -59,7 +59,9 @@ namespace Sphere {
 		virtual bool onlyPO2();
 
 	protected:
-
+        //exit loop?
+        bool doexit;
+        //
 		LinuxApp();
 		friend class Application;
 
