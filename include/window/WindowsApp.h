@@ -36,7 +36,11 @@ namespace Sphere {
 		* resources directory (read only)
 		* @return path
 		*/
-		virtual String appResourcesDirectory();	
+		virtual String appResourcesDirectory();			
+		/**
+		* application exit method
+		*/
+		virtual void exit();
 		/**
 		* application loop
 		*/
@@ -56,7 +60,11 @@ namespace Sphere {
 
 	protected:
 
+		//local vars
+		int doexit;
+		//protected constructor
 		WindowsApp();
+
 		friend class Application;
 
 	};

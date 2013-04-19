@@ -91,7 +91,7 @@ public:
 	Camera camera;
 
 	SphereInstance()
-		:MainInstance("Sphere",1280,800,32,60,false)
+		:MainInstance("Sphere",1280,800,32,60,true)
 		,sphere(1, 12, 24){}
 
 
@@ -137,7 +137,11 @@ public:
 	}
 	/* OOP-STYLE EVENTS */
 	virtual void onKeyPress(Key::Keyboard key){}
-	virtual void onKeyRelease(Key::Keyboard key) {}
+	virtual void onKeyRelease(Key::Keyboard key) {
+		//exit event
+		if(key==Key::ESCAPE) 
+			Application::instance()->exit();
+	}
 	virtual void onMouseMove(Vec2 mousePosition) {
 		//
 		//center of screen

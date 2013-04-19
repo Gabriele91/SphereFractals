@@ -14,11 +14,17 @@ WindowsApp::WindowsApp()
 		   :Application(){
 	screen=(Screen*)new WindowsScreen();
 	input=(Input*)new WindowsInput();
+	//not exit form loop
+	doexit=false;
 }
 
 WindowsApp::~WindowsApp(){
-	delete input;
+	//delete screen
 	delete screen;
+	screen=NULL;
+	//delete input
+	delete input;
+	input=NULL;
 }
 
 bool WindowsApp::loadData(const String& path,void*& ptr,size_t &len){
@@ -53,6 +59,11 @@ String WindowsApp::appResourcesDirectory(){
 	return appWorkingDirectory();
 }	
 
+void WindowsApp::exit(){
+	PostQuitMessage(0);
+	doexit=true;
+}
+
 void WindowsApp::loop(){	
 	//
 	Timer timer;
@@ -65,7 +76,7 @@ void WindowsApp::loop(){
 	//set current context
 	screen->acquireContext();
 	//draw loop
-	while( !input->getClose() ) {
+	while( !input->getClose() && !doexit ) {
 		//get timer values
 		millipass=timer.getGetCounter();
 		//calc dt and sleep time

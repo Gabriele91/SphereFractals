@@ -38,6 +38,10 @@ namespace Sphere {
 		*/
 		virtual String appResourcesDirectory();
 		/**
+		* application exit method
+		*/
+		virtual void exit();
+		/**
 		* application loop
 		*/
 		virtual void loop();

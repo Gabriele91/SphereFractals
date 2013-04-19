@@ -53,7 +53,11 @@ namespace Sphere {
 		* resources directory (read only)
 		* @return path
 		*/
-		virtual String appResourcesDirectory()=0;	
+		virtual String appResourcesDirectory()=0;			
+		/**
+		* application exit method
+		*/
+		virtual void exit()=0;
 		/**
 		* application loop
 		*/

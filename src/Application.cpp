@@ -20,9 +20,8 @@ Application::Application()
 	,audio(NULL){
 
 }
-
 Application::~Application(){
-
+	appSingleton=NULL;	
 }
 
 Application *Application::create(){
@@ -37,7 +36,11 @@ Application *Application::create(){
 	appSingleton=new LinuxApp();
 #elif defined( PLATFORM_ANDROID )
 #endif
-
+	//registration delete at exit
+	atexit([](){ 
+		delete Application::instance(); 
+	});
+	//
 	return appSingleton;
 }
 

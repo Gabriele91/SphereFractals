@@ -200,7 +200,7 @@ void WindowsInput::update(){
 	MSG		msg;
     //take message and send it...
     if (PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
-		    TranslateMessage(&msg);				
+		    TranslateMessage(&msg);			
 			DispatchMessage(&msg);
 	}
 
@@ -280,6 +280,7 @@ LRESULT CALLBACK WindowsInput::WndProc(   HWND hwnd, UINT message, WPARAM wparam
 				winput->ewindow.windowResize.x=LOWORD(lparam);
 				winput->ewindow.windowResize.y=HIWORD(lparam);
 			break;
+			case WM_DESTROY:
 			case WM_QUIT:
 			case WM_CLOSE:
 				winput->ewindow.close=true;
@@ -383,6 +384,7 @@ LRESULT CALLBACK WindowsInput::WndProc(   HWND hwnd, UINT message, WPARAM wparam
 		//not pass processed message
 		return 0;
 	
+
 	}
 	// Pass All Unhandled Messages To DefWindowProc
 	return DefWindowProc(hwnd,message,wparam,lparam);

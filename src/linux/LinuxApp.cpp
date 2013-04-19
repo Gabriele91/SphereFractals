@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "stdafx.h"
 #include <Timer.h>
 #include <LinuxApp.h>
 #include <LinuxScreen.h>
@@ -12,11 +12,17 @@ LinuxApp::LinuxApp()
 		   :Application(){
 	screen=(Screen*)new LinuxScreen();
 	input=(Input*)new LinuxInput();
+	//not exit form loop
+	doexit=true;
 }
 
 LinuxApp::~LinuxApp(){
-	delete input;
+	//delete screen
 	delete screen;
+	screen=NULL;
+	//delete input
+	delete input;
+	input=NULL;
 }
 
 bool LinuxApp::loadData(const String& path,void*& ptr,size_t &len){
@@ -51,6 +57,10 @@ String LinuxApp::appResourcesDirectory(){
 	return appWorkingDirectory();
 }
 
+void LinuxApp::exit(){
+	doexit=true;
+}
+
 void LinuxApp::loop(){
 	//
 	Timer timer;
@@ -63,7 +73,7 @@ void LinuxApp::loop(){
 	//set current context
 	screen->acquireContext();
 	//draw loop
-	while( !input->getClose() ) {
+	while( !input->getClose() && !doexit ) {
 		//get timer values
 		millipass=timer.getGetCounter();
 		//calc dt and sleep time

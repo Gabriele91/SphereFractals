@@ -16,7 +16,7 @@ namespace Sphere {
 	public:
 
 		LinuxScreen();
-		virtual ~LinuxScreen(){};
+		virtual ~LinuxScreen();
 
 		/**
 		* return screen width

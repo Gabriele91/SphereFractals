@@ -197,6 +197,12 @@ void LinuxScreen::closeWindow(){
 	__deleteWindow();
 }
 /**
+* LinuxScreen destructor
+*/
+virtual ~LinuxScreen(){
+	closeWindow();
+}
+/**
 * set fullscreen mode
 */
 void LinuxScreen::setFullscreen(bool argfullscreen){
