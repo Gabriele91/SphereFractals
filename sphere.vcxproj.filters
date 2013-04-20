@@ -84,6 +84,9 @@
     <ClCompile Include="src\Object.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="TheSphere.cpp">
+      <Filter>File di risorse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Application.h">
@@ -166,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="include\Object.h">
       <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="TheSphere.h">
+      <Filter>File di risorse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

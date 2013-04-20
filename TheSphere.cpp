@@ -1,0 +1,5 @@
+#include <stdafx.h>
+#include <TheSphere.h>
+///////////////////////////
+using namespace Sphere;
+///////////////////////////
