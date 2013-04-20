@@ -67,6 +67,10 @@ protected:
 	//start and end sections
 	int sSections;
 	int eSections;
+	//buffer in GPU
+	uint vertexBuffer;
+	uint indexBuffer;
+
 
 public:
 	
@@ -76,7 +80,7 @@ public:
 	DFORCEINLINE int endSections(){ return eSections; }
 
 
-	SphereSruface():ptrSphere(NULL){}
+	SphereSruface():ptrSphere(NULL),vertexBuffer(0),indexBuffer(0){}
 	SphereSruface(TheSphere* argSphere,
 				  //start and end rings
 				  int sRings,
@@ -84,8 +88,17 @@ public:
 				  //start and end sections
 				  int sSections,
 				  int eSections)
-				  :ptrSphere(argSphere){
+				  :ptrSphere(argSphere),vertexBuffer(0),indexBuffer(0){
 		buildSruface(argSphere,sRings,eRings,sSections,eSections);
+	}
+	~SphereSruface(){
+		//////////////////////////////////////////////
+		//delete gpu buffers
+		if( vertexBuffer )
+			glDeleteBuffers(1, &vertexBuffer );
+		if( indexBuffer )
+			glDeleteBuffers(1, &indexBuffer );
+		//////////////////////////////////////////////
 	}
 	/**
 	* build a sphere sub part
@@ -151,6 +164,17 @@ public:
                 *i++ = (r+1) * sectors + s;
 			}
 		}
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		//send to GPU 			
+		if( !vertexBuffer )
+			glGenBuffers(1, &vertexBuffer );
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+		if( !indexBuffer )
+		   glGenBuffers(1, &indexBuffer );		
+		glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(ushort) * indices.size(), &indices[0], GL_STATIC_DRAW);
+		/////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	/**
 	* get sphere point
@@ -172,15 +196,28 @@ public:
 	/**
 	* draw sphere surface
 	*/
-	void draw(bool lines=false){
+	void draw(bool vao=false){
 		//
-		if(lines)
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//
-        glVertexPointer(3,  GL_FLOAT,sizeof(GLVertex),&vertices[0]);
-		glColorPointer (3,  GL_FLOAT,sizeof(GLVertex),((char*)&vertices[0])+sizeof(Vec3));
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
-        glPopMatrix();
+		if(vao){
+			glBindBuffer( GL_ARRAY_BUFFER, 0 );
+			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 ); 
+			glVertexPointer(3,  GL_FLOAT,sizeof(GLVertex),&vertices[0]);
+			glColorPointer (3,  GL_FLOAT,sizeof(GLVertex),((char*)&vertices[0])+sizeof(Vec3));
+			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
+		}
+		//vbo
+		else if(vertexBuffer && indexBuffer){
+			//bind VBO
+			glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
+			//set vertex
+			glVertexPointer(3, GL_FLOAT, sizeof(GLVertex), 0 );
+			glColorPointer(3, GL_FLOAT, sizeof(GLVertex), (void*)sizeof(Vec3) );
+			//bind IBO
+			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, indexBuffer ); 
+			//draw
+			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, 0);
+		}
     }
 
 };
@@ -218,7 +255,7 @@ class SphereTree{
 			memset(nodes,0,sizeof(SphereNode*)*8);
 			//calc division rigns
 			int up=subRingsTop,
-			    middle=subRingsDown/2.0f,
+			    middle=ceil((float)subRingsDown/2.0f),
 			    down=subRingsDown;
 			//calc division sections
 			int hlpart=(subSectionsRight-subSectionsLeft)/4.0f;

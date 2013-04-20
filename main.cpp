@@ -24,6 +24,8 @@ class SphereInstance : public MainInstance,
 		//update projection
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(projection);
+		//now change only MODELVIEW
+		glMatrixMode(GL_MODELVIEW);
 	}
 
 public:
@@ -35,9 +37,13 @@ public:
 
 	SphereInstance()
 		:MainInstance("Sphere",1280,800,32,60,false)
-		,sphereTree(1,320,320)	
+		,sphereTree(1,160,160)	
 	{
 		sphereTree.getRoot().addNode(0);
+		sphereTree.getRoot().addNode(1);
+		sphereTree.getRoot().addNode(2);
+		sphereTree.getRoot().addNode(3);
+		sphereTree.getRoot().addNode(5);
 		sphereTree.getRoot().getNode(0).addNode(0);
 	}
 
@@ -74,12 +80,12 @@ public:
 		glClearColor(0.25f, 0.5f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		//reset model view matrix
-		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf(camera.getGlobalMatrix());
 		//draw
-		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		sphereTree.draw();
 		sphereTree.getRoot().getNode(0).draw();
+		sphereTree.getRoot().getNode(5).draw();
 		sphereTree.getRoot().getNode(0).getNode(0).draw();
 	}
 	void end(){
