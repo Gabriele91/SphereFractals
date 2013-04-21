@@ -37,14 +37,13 @@ public:
 
 	SphereInstance()
 		:MainInstance("Sphere",1280,800,32,60,false)
-		,sphereTree(1,160,160)	
+		,sphereTree(1,720,720)	
 	{
-		sphereTree.getRoot().addNode(0);
-		sphereTree.getRoot().addNode(1);
-		sphereTree.getRoot().addNode(2);
-		sphereTree.getRoot().addNode(3);
-		sphereTree.getRoot().addNode(5);
-		sphereTree.getRoot().getNode(0).addNode(0);
+		for(int i=0;i<8;++i){
+			sphereTree.getRoot().addNode(i);
+			for(int j=0;j<8;++j)
+				sphereTree.getRoot().getNode(i).addNode(j);
+		}
 	}
 
 
@@ -78,15 +77,23 @@ public:
 	void run(float dt){
 		//clear
 		glClearColor(0.25f, 0.5f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 		//reset model view matrix
 		glLoadMatrixf(camera.getGlobalMatrix());
 		//draw
 		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-		sphereTree.draw();
-		sphereTree.getRoot().getNode(0).draw();
-		sphereTree.getRoot().getNode(5).draw();
-		sphereTree.getRoot().getNode(0).getNode(0).draw();
+		
+		for(int i=0;i<8;++i)
+		for(int j=0;j<8;++j)
+			sphereTree.getRoot().getNode(i).getNode(j).draw();
+		//sphereTree.draw();
+		//sphereTree.getRoot().drawBoxs();
+		//sphereTree.getRoot().getNode(0).draw();
+		//sphereTree.getRoot().getNode(0).drawBoxs();
+		//sphereTree.getRoot().getNode(5).draw();
+		//sphereTree.getRoot().getNode(5).drawBoxs();
+		//sphereTree.getRoot().getNode(0).getNode(0).draw();
+		//sphereTree.getRoot().getNode(0).getNode(0).drawBoxs();
 	}
 	void end(){
 	}

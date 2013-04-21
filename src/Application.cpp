@@ -1,5 +1,6 @@
 #include <stdafx.h>
 #include <Application.h>
+#include <ETime.h>
 #if defined( PLATFORM_IOS )
 #elif defined( PLATFORM_OSX )
 #elif defined( PLATFORM_WINDOW )
@@ -27,6 +28,8 @@ Application::~Application(){
 Application *Application::create(){
 
 	DEBUG_ASSERT(!appSingleton);
+	
+	Math::seedRandom(GetTime());
 
 #if defined( PLATFORM_IOS )
 #elif defined( PLATFORM_OSX )

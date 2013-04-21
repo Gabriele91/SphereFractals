@@ -47,6 +47,7 @@ namespace Sphere{
 		///////////////////////////////////////////////////////////////////////////
 		DFORCEINLINE float squaredLength(){ return x*x+y*y; };
 		DFORCEINLINE void abs(){ x=fabs(x); y=fabs(y); }
+		DFORCEINLINE Vector2D getAbs(){ return Vector2D(fabs(x),fabs(y)); }
 		///////////////////////////////////////////////////////////////////////////
 		DFORCEINLINE float& operator [] (unsigned int i) { return (i%2 == 0) ? x: y; }
 		DFORCEINLINE bool operator==(const Vector2D &v) const { return (x==v.x && y==v.y);	}
@@ -138,6 +139,7 @@ namespace Sphere{
 		///////////////////////////////////////////////////////////////////////////
 		DFORCEINLINE float squaredLength(){ return x*x+y*y+z*z; };
 		DFORCEINLINE void abs(){ x=fabs(x); y=fabs(y); z=fabs(z); }
+		DFORCEINLINE Vector3D getAbs(){ return Vector3D(fabs(x),fabs(y), fabs(z)); }
 		///////////////////////////////////////////////////////////////////////////
 		DFORCEINLINE float& operator [] (unsigned int i) { return i==0 ? x: i==1 ? y : z; }
 		DFORCEINLINE bool operator==(const Vector3D &v) const { return (x==v.x && y==v.y && z==v.z);	}
@@ -255,6 +257,7 @@ namespace Sphere{
 		///////////////////////////////////////////////////////////////////////////
 		DFORCEINLINE float squaredLength(){ return x*x+y*y+z*z+w*w; };
 		DFORCEINLINE void abs(){ x=fabs(x); y=fabs(y); z=fabs(z); w=fabs(w); }
+		DFORCEINLINE Vector4D getAbs(){ return Vector4D(fabs(x),fabs(y), fabs(z), fabs(w)); }
 		///////////////////////////////////////////////////////////////////////////
 		DFORCEINLINE float& operator [] (unsigned int i) { return i==0 ? x: i==1 ? y : i==2 ? z : w; }
 		DFORCEINLINE bool operator==(const Vector4D &v) const { return (x==v.x && y==v.y && z==v.z && w==v.w);	}
@@ -522,25 +525,49 @@ namespace Sphere{
 		//min
 		template<typename T>
 		static DFORCEINLINE T min(T x,T y){
-		return x>y?y:x;
+			return x>y?y:x;
 		}
-		template<Vector2D&>
-		static DFORCEINLINE Vector2D min(const Vector2D& v1,const Vector2D& v2){
-		return Vector2D(min(v1.x,v2.x),min(v1.y,v2.y));
+		template<>
+		static DFORCEINLINE Vector2D min<Vector2D>(Vector2D v1,Vector2D v2){
+			return Vector2D(min(v1.x,v2.x),min(v1.y,v2.y));
+		}
+		template<>
+		static DFORCEINLINE const Vector2D& min<const Vector2D&>(const Vector2D& v1,const Vector2D& v2){
+			return Vector2D(min(v1.x,v2.x),min(v1.y,v2.y));
+		}
+		template<>
+		static DFORCEINLINE Vector3D min<Vector3D>(Vector3D v1,Vector3D v2){
+			return Vector3D(min(v1.x,v2.x),min(v1.y,v2.y),min(v1.z,v2.z));
+		}
+		template<>
+		static DFORCEINLINE const Vector3D& min<const Vector3D&>(const Vector3D& v1,const Vector3D& v2){
+			return Vector3D(min(v1.x,v2.x),min(v1.y,v2.y),min(v1.z,v2.z));
 		}
 		//max
 		template<class T>
 		static DFORCEINLINE T max(T x,T y){
-		return x>y?x:y;
+			return x>y?x:y;
 		}
-		template<Vector2D&>
-		static DFORCEINLINE Vector2D max(const Vector2D& v1,const Vector2D& v2){
-		return Vector2D(max(v1.x,v2.x),max(v1.y,v2.y));
+		template<>
+		static DFORCEINLINE Vector2D max<Vector2D>(Vector2D v1,Vector2D v2) {
+			return Vector2D(max(v1.x,v2.x),max(v1.y,v2.y));
+		}
+		template<>
+		static DFORCEINLINE const Vector2D& max<const Vector2D&>(const Vector2D& v1,const Vector2D& v2) {
+			return Vector2D(max(v1.x,v2.x),max(v1.y,v2.y));
+		}
+		template<>
+		static DFORCEINLINE Vector3D max<Vector3D>(Vector3D v1,Vector3D v2) {
+			return Vector3D(max(v1.x,v2.x),max(v1.y,v2.y),max(v1.z,v2.z));
+		}
+		template<>
+		static DFORCEINLINE const Vector3D& max<const Vector3D&>(const Vector3D& v1,const Vector3D& v2) {
+			return Vector3D(max(v1.x,v2.x),max(v1.y,v2.y),max(v1.z,v2.z));
 		}
 		//lerp
 		template <class T>
 		static DFORCEINLINE T lerp( const T& left, const T& right, float t ){
-		return (T)(left * (1-t) + right * t);
+			return (T)(left * (1-t) + right * t);
 		}
 		//clamp
 		template <class T>
@@ -550,7 +577,7 @@ namespace Sphere{
 		//saturate
 		template <class T>
 		static DFORCEINLINE T saturate( const T& value ){
-		return clamp(value,1,0);
+			return clamp(value,1,0);
 		}
 		//power of 2 test
 		template <class T>
@@ -607,12 +634,12 @@ namespace Sphere{
 		template <int n>
 		struct fibonacci {
 		  //static
-		  enum { value = fibonacci<n - 2>::value * fibonacci<n - 1>::value };
+		  enum { value = fibonacci<n - 2>::value + fibonacci<n - 1>::value };
 		  //dynamic 
 		  int get(){ return fib(n); }
 		  
 		private:
-		  int fib(int x){ return x<2?1:fib(x-2)*fib(x-1); }
+		  int fib(int x){ return x<2?1:fib(x-2)+fib(x-1); }
 		  
 		};
 		template<>
