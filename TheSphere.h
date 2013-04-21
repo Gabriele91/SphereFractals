@@ -140,6 +140,19 @@ public:
 	* draw sphere surface
 	*/
 	void draw(bool vao=false);
+	/**
+	* release cpu memory
+	*/
+	void clearCPUMemory(){
+		//force clear
+		vertices.clear();
+		vertices.resize(0);
+		vertices.shrink_to_fit();
+		//force clear
+		indices.clear();
+		indices.resize(0);
+		indices.shrink_to_fit();
+	}
 
 };
 
@@ -170,6 +183,13 @@ class SphereTree{
 		* destructor
 		*/
 		~SphereNode();
+		/**
+		* release cpu memory
+		*/
+		void clearCPUMemorySurfaces(){
+			for(auto& surfaces:surfaces)
+				surfaces.clearCPUMemory();			
+		}
 		/**
 		* draw sphere sub parts 
 		*/

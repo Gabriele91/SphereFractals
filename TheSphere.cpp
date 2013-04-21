@@ -172,7 +172,6 @@ void SphereSruface::spherePoint(Vec3& point,int ring, int section){
 */
 void SphereSruface::draw(bool vao){
 	//
-	//
 	if(vao){
 		glBindBuffer( GL_ARRAY_BUFFER, 0 );
 		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 ); 

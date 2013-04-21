@@ -41,9 +41,19 @@ public:
 	{
 		for(int i=0;i<8;++i){
 			sphereTree.getRoot().addNode(i);
-			for(int j=0;j<8;++j)
+			for(int j=0;j<8;++j){
 				sphereTree.getRoot().getNode(i).addNode(j);
+			}
 		}
+		/*
+		//clear memory
+		sphereTree.getRoot().clearCPUMemorySurfaces();
+		for(int i=0;i<8;++i){
+			sphereTree.getRoot().getNode(i).clearCPUMemorySurfaces();
+			for(int j=0;j<8;++j)
+				sphereTree.getRoot().getNode(i).getNode(j).clearCPUMemorySurfaces();
+		}
+		*/
 	}
 
 
@@ -59,6 +69,8 @@ public:
 		//enable culling
 		glEnable( GL_CULL_FACE );
 		glCullFace( GL_FRONT );
+		//enable z buffer
+		glEnable(GL_DEPTH_TEST);
 		//set projection matrix
 		projectionAngle=45.0f;
 		setProjection(projectionAngle,0.1f,1000.0f);
@@ -84,8 +96,10 @@ public:
 		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		
 		for(int i=0;i<8;++i)
-		for(int j=0;j<8;++j)
-			sphereTree.getRoot().getNode(i).getNode(j).draw();
+		for(int j=0;j<8;++j){
+			sphereTree.getRoot().getNode(i).getNode(j).draw(); 
+			//sphereTree.getRoot().getNode(i).getNode(j).getNode(k).drawBoxs();
+		};
 		//sphereTree.draw();
 		//sphereTree.getRoot().drawBoxs();
 		//sphereTree.getRoot().getNode(0).draw();
