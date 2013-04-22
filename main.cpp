@@ -31,20 +31,26 @@ class SphereInstance : public MainInstance,
 public:
 
 	SphereTree sphereTree;
-	Camera camera;
+	Object camera;
 	Vec2 rotation;
+	Mat4 inverse;
 
 
 	SphereInstance()
 		:MainInstance("Sphere",1280,800,32,60,false)
-		,sphereTree(1,720,720)	
+		,sphereTree(1,500,500)	
 	{
-		for(int i=0;i<8;++i){
+		
+		sphereTree.getRoot().addNode(0);
+		sphereTree.getRoot().getNode(0).addNode(0);
+
+		/*for(int i=0;i<8;++i){
 			sphereTree.getRoot().addNode(i);
 			for(int j=0;j<8;++j){
 				sphereTree.getRoot().getNode(i).addNode(j);
 			}
-		}
+		}*/
+		
 		/*
 		//clear memory
 		sphereTree.getRoot().clearCPUMemorySurfaces();
@@ -70,7 +76,7 @@ public:
 		glEnable( GL_CULL_FACE );
 		glCullFace( GL_FRONT );
 		//enable z buffer
-		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
 		//set projection matrix
 		projectionAngle=45.0f;
 		setProjection(projectionAngle,0.1f,1000.0f);
@@ -83,6 +89,7 @@ public:
 		/////////////////////////////////////////////
 		//camera position
 		camera.setPosition(Vec3(0,0,-20));
+		inverse=camera.getGlobalMatrix().getInverse();
 	}
 
 
@@ -94,14 +101,39 @@ public:
 		glLoadMatrixf(camera.getGlobalMatrix());
 		//draw
 		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-		
-		for(int i=0;i<8;++i)
-		for(int j=0;j<8;++j){
-			sphereTree.getRoot().getNode(i).getNode(j).draw(); 
-			//sphereTree.getRoot().getNode(i).getNode(j).getNode(k).drawBoxs();
-		};
+		sphereTree.draw();
+		sphereTree.getRoot().getNode(0).draw();		
+		sphereTree.getRoot().getNode(0).getNode(0).draw();
+		sphereTree.getRoot().getNode(0).getNode(0).drawBoxs();
+		//for(int i=0;i<8;++i)
+		//for(int j=0;j<8;++j){
+			//sphereTree.getRoot().getNode(i).getNode(j).draw(); 
+			//sphereTree.getRoot().getNode(i).drawBoxs();
+		//}
+
 		//sphereTree.draw();
 		//sphereTree.getRoot().drawBoxs();
+		//ray cast
+		if(Application::instance()->getInput()->getMouseDown(Key::BUTTON_RIGHT))
+			inverse=camera.getGlobalMatrix().getInverse();
+		Vec3 raysVPos[]={
+			          inverse.mul(Vec4(0.5,0.5,0,1.0)).xyz(),
+			          inverse.mul(Vec4(0.0,0.5,0,1.0)).xyz(),
+			          inverse.mul(Vec4(-0.5,0.5,0,1.0)).xyz(),
+			          inverse.mul(Vec4(0.5,-0.5,0,1.0)).xyz(),
+			          inverse.mul(Vec4(0.0,-0.5,0,1.0)).xyz(),
+			          inverse.mul(Vec4(-0.5,-0.5,0,1.0)).xyz()
+					  };
+
+		for(auto& rayPos:raysVPos){
+			Ray ray(rayPos,-rayPos);
+			ray.draw();
+			Segment collision;
+			if(sphereTree.getRoot().sphere.rayCast(ray,collision)){
+				collision.draw();
+			}
+		}
+		//
 		//sphereTree.getRoot().getNode(0).draw();
 		//sphereTree.getRoot().getNode(0).drawBoxs();
 		//sphereTree.getRoot().getNode(5).draw();
@@ -132,7 +164,7 @@ public:
 			norm.y+=0.5;
 			norm.x+=0.5;
 			//rotation vel
-			float vel=2.;//projectionAngle*0.1;
+			float vel=3.0f;//projectionAngle*0.1;
 			rotation.x=norm.x*Math::PI*vel;
 			rotation.y=-norm.y*Math::PI*vel;
 			//

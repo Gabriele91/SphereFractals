@@ -6,7 +6,25 @@
 
 namespace Sphere{
 
+struct Ray{
 	
+	Vec3 point;
+	Vec3 dir;
+
+	Ray(const Vec3& point,const Vec3& dir)
+		:point(point),dir(dir.getNormalize()){
+	}
+
+	void draw(float leng=10000);
+};
+
+struct Segment{
+
+	Vec3 t[2];	
+	void draw();
+
+};
+
 class TheSphere {
 
 	//sphere radius
@@ -44,6 +62,33 @@ public:
 	}
 	DFORCEINLINE int getRadius(){
 		return radius;
+	}
+
+	bool rayCast(const Ray& r,Segment& sg){
+		/*
+		http://www.siggraph.org/education/materials/HyperGraph/raytrace/rtinter1.htm
+		http://www.gamedev.net/topic/476158-ray-sphere-intersection/
+		*/
+		//calc B					 
+		// We solve this second-degree equation in t:
+	    // distance(p+t*v,center)==radius
+	    // If we define w = p-center
+	    // we can write that as
+	    // <w+t*v,w+t*v> == radius*radius
+	    // <w,w> + 2.0f*t*<w,v> + t*t*<v,v> - radius*radius == 0
+	    // <v,v>*t*t + 2.0f*<w,v>*t + <w,w>-radius*radius == 0
+	    // A*t*t + B*t*t + C*t*t == 0
+		Vector3D w = r.point;
+		float A = r.dir.dot(r.dir);
+		float B = 2*w.dot(r.dir);
+		float C = w.dot(w) - radius*radius;
+		//calc d
+		float D = B*B-4.0f*A*C;
+		//points
+		sg.t[0]=r.point+r.dir*(-B - sqrt(D))/(2.0f*A);
+		sg.t[1]=r.point+r.dir*(-B + sqrt(D))/(2.0f*A);
+		//
+		return D >=0;
 	}
 
 };
