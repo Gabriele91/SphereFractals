@@ -116,10 +116,10 @@ void SphereSruface::buildSruface(
 	//
 	for(int r = sRings; r<eRings; ++r){
 		for(int s= sSections; s<eSections; ++s){
-			Vec3 color(Math::random(),Math::random(),Math::random());
 			/* calc vertex */
 			GLVertex glvertex;
 			spherePoint(glvertex.vertex,r,s);
+			Vec3 color((glvertex.vertex.y+1),0,0);
 			glvertex.color=color;
 			vertices.push_back(glvertex);
 		}
