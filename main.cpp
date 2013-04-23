@@ -39,7 +39,7 @@ public:
 	Object camera;
 	Vec2 rotation;
 	Mat4 inverse;
-	RayGrid<10,10> grid;
+	RayGrid<5,5> grid;
 
 
 	SphereInstance()
@@ -117,14 +117,14 @@ public:
 			//sphereTree.getRoot().getNode(i).drawBoxs();
 		//}
 		if(Application::instance()->getInput()->getMouseDown(Key::BUTTON_RIGHT)){
-			grid.calcRay(projectionAngle,0.1f,1000.0f,camera.getGlobalMatrix());
+			grid.calcRayCam(projectionAngle,0.1f,1000.0f,camera.getGlobalMatrix());
 		}
-		//grid.draw();
+		grid.draw();
 		std::vector<Vec3> vecs;		
 		//grid.getNearPoints(sphereTree.getRoot().sphere,vecs);
 		grid.drawCast(sphereTree.getRoot().sphere);
 
-		//sphereTree.draw();
+		sphereTree.draw();
 		//sphereTree.getRoot().drawBoxs();
 		//ray cast
 		/*
