@@ -3,7 +3,8 @@
 #include <MainInstance.h>
 #include <Camera.h>
 #include <Math2D.h>
-#include <TheSphere.h>
+#include <SphereTree.h>
+#include <Rays.h>
 
 using namespace Sphere;
 

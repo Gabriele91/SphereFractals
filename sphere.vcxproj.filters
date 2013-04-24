@@ -25,6 +25,9 @@
     <Filter Include="File di origine\thread">
       <UniqueIdentifier>{5b2f3882-f0f0-4ea6-b0ba-9285fbf10526}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sphere">
+      <UniqueIdentifier>{b5de0ba8-f754-4d96-8f91-bc473ca74fe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -84,8 +87,17 @@
     <ClCompile Include="src\Object.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
-    <ClCompile Include="TheSphere.cpp">
-      <Filter>File di risorse</Filter>
+    <ClCompile Include="sphere\AbstractSphere.cpp">
+      <Filter>sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="sphere\Rays.cpp">
+      <Filter>sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="sphere\SphereSurface.cpp">
+      <Filter>sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="sphere\SphereTree.cpp">
+      <Filter>sphere</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,8 +182,17 @@
     <ClInclude Include="include\Object.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
-    <ClInclude Include="TheSphere.h">
-      <Filter>File di risorse</Filter>
+    <ClInclude Include="sphere\AbstractSphere.h">
+      <Filter>sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere\Rays.h">
+      <Filter>sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere\SphereSurface.h">
+      <Filter>sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere\SphereTree.h">
+      <Filter>sphere</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
