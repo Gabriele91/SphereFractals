@@ -3,8 +3,7 @@
 #include <MainInstance.h>
 #include <Camera.h>
 #include <Math2D.h>
-#include <SphereTree.h>
-#include <Rays.h>
+#include <SphereManager.h>
 
 using namespace Sphere;
 
@@ -36,37 +35,16 @@ class SphereInstance : public MainInstance,
 
 public:
 
-	SphereTree sphereTree;
 	Object camera;
 	Vec2 rotation;
-	Mat4 inverse;
-	RayGrid<5,5> grid;
+	SphereManager sphere;
 
 
 	SphereInstance()
 		:MainInstance("Sphere",1280,800,32,60,false)
-		,sphereTree(1,500,500)	
+		,sphere(2.0f,5,10000,20000)	
 	{
-		
-		sphereTree.getRoot().addNode(0);
-		sphereTree.getRoot().getNode(0).addNode(0);
 
-		/*for(int i=0;i<8;++i){
-			sphereTree.getRoot().addNode(i);
-			for(int j=0;j<8;++j){
-				sphereTree.getRoot().getNode(i).addNode(j);
-			}
-		}*/
-		
-		/*
-		//clear memory
-		sphereTree.getRoot().clearCPUMemorySurfaces();
-		for(int i=0;i<8;++i){
-			sphereTree.getRoot().getNode(i).clearCPUMemorySurfaces();
-			for(int j=0;j<8;++j)
-				sphereTree.getRoot().getNode(i).getNode(j).clearCPUMemorySurfaces();
-		}
-		*/
 	}
 
 
@@ -96,7 +74,8 @@ public:
 		/////////////////////////////////////////////
 		//camera position
 		camera.setPosition(Vec3(0,0,-20));
-		inverse=camera.getGlobalMatrix().getInverse();
+		//create sphere
+		sphere.update(projectionAngle,0.1f,100.0f,camera.getGlobalMatrix());
 	}
 
 
@@ -108,65 +87,11 @@ public:
 		glLoadMatrixf(camera.getGlobalMatrix());
 		//draw
 		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-	/*	sphereTree.draw();
-		sphereTree.getRoot().getNode(0).draw();		
-		sphereTree.getRoot().getNode(0).getNode(0).draw();
-		sphereTree.getRoot().getNode(0).getNode(0).drawBoxs();
-		*///for(int i=0;i<8;++i)
-		//for(int j=0;j<8;++j){
-			//sphereTree.getRoot().getNode(i).getNode(j).draw(); 
-			//sphereTree.getRoot().getNode(i).drawBoxs();
+		//if(Application::instance()->getInput()->getMouseDown(Key::BUTTON_RIGHT)){
+		sphere.update(projectionAngle,0.1f,100.0f,camera.getGlobalMatrix());
 		//}
-		if(Application::instance()->getInput()->getMouseDown(Key::BUTTON_RIGHT)){
-			grid.calcRayCam(projectionAngle,0.1f,1000.0f,camera.getGlobalMatrix());
-		}
-		grid.draw();
-		std::vector<Vec3> vecs;		
-		//grid.getNearPoints(sphereTree.getRoot().sphere,vecs);
-		grid.drawCast(sphereTree.getRoot().sphere);
-
-		sphereTree.draw();
-		//sphereTree.getRoot().drawBoxs();
-		//ray cast
-		/*
-		if(Application::instance()->getInput()->getMouseDown(Key::BUTTON_RIGHT))
-			inverse=camera.getGlobalMatrix().getInverse();
-
-		Vec2 factor;
-		getFromProjection(projectionAngle,0.1f,1000.0f,factor.x,factor.y);
-
-		Vec3 raysVPos[]={
-			          inverse.mul(Vec4( 0.5*factor.x, 0.5*factor.y,0,1.0)).xyz(),
-			          inverse.mul(Vec4( 0.0*factor.x, 0.5*factor.y,0,1.0)).xyz(),
-			          inverse.mul(Vec4(-0.5*factor.x, 0.5*factor.y,0,1.0)).xyz(),
-			          inverse.mul(Vec4( 0.5*factor.x,-0.5*factor.y,0,1.0)).xyz(),
-			          inverse.mul(Vec4( 0.0*factor.x,-0.5*factor.y,0,1.0)).xyz(),
-			          inverse.mul(Vec4(-0.5*factor.x,-0.5*factor.y,0,1.0)).xyz()
-					  };
-		Vec3 raysVDir[]={
-			          inverse.mul(Vec4( 0.5*factor.x, 0.5*factor.y,-1.0,0.0)).xyz(),
-			          inverse.mul(Vec4( 0.0*factor.x, 0.5*factor.y,-1.0,0.0)).xyz(),
-			          inverse.mul(Vec4(-0.5*factor.x, 0.5*factor.y,-1.0,0.0)).xyz(),
-			          inverse.mul(Vec4( 0.5*factor.x,-0.5*factor.y,-1.0,0.0)).xyz(),
-			          inverse.mul(Vec4( 0.0*factor.x,-0.5*factor.y,-1.0,0.0)).xyz(),
-			          inverse.mul(Vec4(-0.5*factor.x,-0.5*factor.y,-1.0,0.0)).xyz()
-					  };
-
-		for(int i=0;i<6;++i){
-			Ray ray(raysVPos[i],raysVDir[i]);
-			ray.draw();
-			Segment collision;
-			if(sphereTree.getRoot().sphere.rayCast(ray,collision)){
-				collision.draw();
-			}
-		}*/
-		//
-		//sphereTree.getRoot().getNode(0).draw();
-		//sphereTree.getRoot().getNode(0).drawBoxs();
-		//sphereTree.getRoot().getNode(5).draw();
-		//sphereTree.getRoot().getNode(5).drawBoxs();
-		//sphereTree.getRoot().getNode(0).getNode(0).draw();
-		//sphereTree.getRoot().getNode(0).getNode(0).drawBoxs();
+		sphere.draw();
+		
 	}
 	void end(){
 	}

@@ -9,8 +9,10 @@
 namespace Sphere {	
 
 	//OCT-TREE
-	class SphereTree{
+	class SphereTree{		
+	public:
 
+		////////////////////////////
 		struct SphereNode{
 
 			AbstractSphere   sphere;
@@ -51,14 +53,12 @@ namespace Sphere {
 			/*
 			* add a sub node
 			*/
-			void addNode(int i,int factor=2);
+			SphereNode& addNode(int i,int factor=2);
 			SphereNode& getNode(int i);
 		};
-	
-		SphereNode root;
+		////////////////////////////
 
-	public:
-
+		////////////////////////////
 		SphereTree(//sphere (origin)
 				   float radius,int rings,int sections)
 				   :root(//sphere (origin)
@@ -75,7 +75,10 @@ namespace Sphere {
 		void draw(){
 			root.draw();
 		}
+		
+	private:
 
+		SphereNode root;
 	};
 
 

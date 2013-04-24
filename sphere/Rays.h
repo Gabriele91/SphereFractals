@@ -3,6 +3,7 @@
 
 #include <Config.h>
 #include <Math2D.h>
+#include <Application.h>
 #include <AbstractSphere.h>
 
 namespace Sphere {
@@ -56,9 +57,35 @@ namespace Sphere {
 
 		RayGrid(){};
 	
+
 		DFORCEINLINE void calcRayCam(float angle,float n,float f,const Mat4& mat){
 			//
 			inverse=mat.getInverse();
+			//projection factor
+			Vec3 factor;
+			getFromProjection(angle,n,f,factor.x,factor.y);
+			//create a grid		
+			static const float invX=1.0/NX;
+			static const float invY=1.0/NY;
+			static const float invX2=2.0/NX;
+			static const float invY2=2.0/NY;
+			Vec2 step,stepDir;
+			float diff=1.0/n;
+			//rays
+			for(int y=0;y<ny;++y)
+			for(int x=0;x<nx;++x){
+				//calc step
+				step.x=(invX2*x+invX-1)*factor.x;
+				step.y=(invX2*y+invY-1)*factor.y;
+				stepDir.x=(invX2*x+invX-1)*diff*factor.x;
+				stepDir.y=(invX2*y+invY-1)*diff*factor.y;
+				Vec3 pos(inverse.mul(Vec4( step,      0.0,1.0)).xyz());
+				Vec3 dir(inverse.mul(Vec4( stepDir,  -1.0,0.0)).xyz());
+				rays[y*nx+x]=Ray(pos,dir);
+			}
+		}
+		DFORCEINLINE void calcRayCamInverse(float angle,float n,float f,const Mat4& inverse){
+			//
 			//projection factor
 			Vec3 factor;
 			getFromProjection(angle,n,f,factor.x,factor.y);
@@ -104,7 +131,29 @@ namespace Sphere {
 				rays[y*nx+x]=Ray(inverse.mul(Vec4( step,  0.0,1.0)).xyz(),
 								 inverse.mul(Vec4( step, -1.0,0.0)).xyz());
 			}
+		}		
+		DFORCEINLINE void calcRayInverse(float angle,float n,float f,const Mat4& inverse){
+			//projection factor
+			Vec3 factor;
+			getFromProjection(angle,n,f,factor.x,factor.y);
+			//create a grid		
+			static const float invX=1.0/NX;
+			static const float invY=1.0/NY;
+			static const float invX2=2.0/NX;
+			static const float invY2=2.0/NY;
+			Vec2 step;
+			//rays
+			for(int y=0;y<ny;++y)
+			for(int x=0;x<nx;++x){
+				//calc step
+				step.x=(invX2*x+invX-1)*factor.x;
+				step.y=(invX2*y+invY-1)*factor.y;
+				//
+				rays[y*nx+x]=Ray(inverse.mul(Vec4( step,  0.0,1.0)).xyz(),
+								 inverse.mul(Vec4( step, -1.0,0.0)).xyz());
+			}
 		}
+
 
 		void getNearPoints(const AbstractSphere& sphere,std::vector<Vec3>& points) const{		
 			points.clear();

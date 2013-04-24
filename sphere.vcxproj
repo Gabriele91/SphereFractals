@@ -72,6 +72,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sphere\AbstractSphere.cpp" />
     <ClCompile Include="sphere\Rays.cpp" />
+    <ClCompile Include="sphere\SphereManager.cpp" />
     <ClCompile Include="sphere\SphereSurface.cpp" />
     <ClCompile Include="sphere\SphereTree.cpp" />
     <ClCompile Include="src\Application.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="include\window\WindowsScreen.h" />
     <ClInclude Include="sphere\AbstractSphere.h" />
     <ClInclude Include="sphere\Rays.h" />
+    <ClInclude Include="sphere\SphereManager.h" />
     <ClInclude Include="sphere\SphereSurface.h" />
     <ClInclude Include="sphere\SphereTree.h" />
     <ClInclude Include="src\Image\Image.h" />

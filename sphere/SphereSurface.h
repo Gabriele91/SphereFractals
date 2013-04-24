@@ -44,6 +44,7 @@ namespace Sphere {
 			Vec3 point;
 			Vec3 extents;
 			bool collision(const Box& box) const; 
+			bool collision(const Vec3& point) const; 
 			void draw() const;
 		};
 		Box box;

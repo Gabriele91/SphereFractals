@@ -61,8 +61,9 @@ void DSPHERENODE::drawBoxs(){
 		surface.getBox().draw();
 }
 
-void DSPHERENODE::addNode(int i,int factor){			
-			if(!nodes[i]){
+
+DSPHERENODE& DSPHERENODE::addNode(int i,int factor){			
+			if(!nodes[i])
 				nodes[i]=
 					new SphereNode(
 						//shere
@@ -75,8 +76,8 @@ void DSPHERENODE::addNode(int i,int factor){
 						surfaces[i].startSections()*factor,
 						surfaces[i].endSections()*factor
 					);
-			}
-		}
+			return *nodes[i];
+}
 
 DSPHERENODE& DSPHERENODE::getNode(int i){
 			return *nodes[i];

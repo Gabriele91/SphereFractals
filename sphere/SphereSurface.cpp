@@ -10,6 +10,14 @@ bool SphereSurface::Box::collision(const Box& box) const{
 	fabs( box.point.x - point.x ) <= (box.extents.x + extents.x) &&
 	fabs( box.point.z - point.z ) <= (box.extents.z + extents.z);
 } 
+bool SphereSurface::Box::collision(const Vec3& point) const{
+	return point.x<=(this->point.x+this->extents.x) &&
+           point.x>=(this->point.x-this->extents.x) &&
+           point.y<=(this->point.y+this->extents.y) &&
+           point.y>=(this->point.y-this->extents.y) &&
+           point.z<=(this->point.z+this->extents.z) &&
+           point.z>=(this->point.z-this->extents.z) ;
+} 
 void SphereSurface::Box::draw() const{			
 	std::vector<GLVertex> vertices;
 	Vec3 color(1.0,0.0,0.0);
@@ -88,17 +96,21 @@ void SphereSurface::buildSurface(
 	//max is argSphere->getRings() and argSphere->getSections() 
 	eSections=Math::min(eSections,argSphere->getSections());
 	eRings=Math::min(eRings,argSphere->getRings());
+	//range
+	int rings=eRings-sRings;
+	int sectors=eSections-sSections;
 	/////////////////////////////////////////////////////////
-	//
-	//
+	//set size vertex
+	vertices.resize(rings*sectors);
+	int idv=0;
 	Vec3 color(Math::random(),0,0);
+	//set vertex
 	for(int r = sRings; r<eRings; ++r){
 		for(int s= sSections; s<eSections; ++s){
 			/* calc vertex */
-			GLVertex glvertex;
-			spherePoint(glvertex.vertex,r,s);
-			glvertex.color=color;
-			vertices.push_back(glvertex);
+			spherePoint(vertices[idv].vertex,r,s);
+			vertices[idv].color=color;
+			++idv;
 		}
 	}
 	//calc box
@@ -110,9 +122,7 @@ void SphereSurface::buildSurface(
 	box.extents=-Vec3::MAX;
 	for(auto& vertice:vertices)
 		box.extents=Math::max(box.extents,(vertice.vertex-box.point).getAbs());
-	//range
-	int rings=eRings-sRings;
-	int sectors=eSections-sSections;
+
 	/*		
     *i++ = r * sectors + s;
     *i++ = r * sectors + (s+1);

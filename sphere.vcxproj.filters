@@ -99,6 +99,9 @@
     <ClCompile Include="sphere\SphereTree.cpp">
       <Filter>sphere</Filter>
     </ClCompile>
+    <ClCompile Include="sphere\SphereManager.cpp">
+      <Filter>sphere</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Application.h">
@@ -192,6 +195,9 @@
       <Filter>sphere</Filter>
     </ClInclude>
     <ClInclude Include="sphere\SphereTree.h">
+      <Filter>sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere\SphereManager.h">
       <Filter>sphere</Filter>
     </ClInclude>
   </ItemGroup>
