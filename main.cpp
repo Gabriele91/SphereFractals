@@ -42,7 +42,7 @@ public:
 
 	SphereInstance()
 		:MainInstance("Sphere",1280,800,32,60,false)
-		,sphere(2.0f,5,10000,20000)	
+		,sphere(1.6f,5,20000,20000)	
 	{
 
 	}
@@ -87,9 +87,9 @@ public:
 		glLoadMatrixf(camera.getGlobalMatrix());
 		//draw
 		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-		//if(Application::instance()->getInput()->getMouseDown(Key::BUTTON_RIGHT)){
-		sphere.update(projectionAngle,0.1f,100.0f,camera.getGlobalMatrix());
-		//}
+		if(!Application::instance()->getInput()->getMouseDown(Key::BUTTON_RIGHT)){
+			sphere.update(projectionAngle,0.1f,100.0f,camera.getGlobalMatrix());
+		}
 		sphere.draw();
 		
 	}
@@ -135,7 +135,7 @@ public:
 	}
 	virtual void onMouseRelease(Vec2 mousePosition, Key::Mouse button){}
 	virtual void onMouseScroll(short scrollDelta){
-		projectionAngle*=(scrollDelta>0 ? 1.25f : 0.75f );
+		projectionAngle*=(scrollDelta>0 ? 1.05f : 0.95f );
 		setProjection(projectionAngle,0.1f,1000.0f);
 	}
 };

@@ -89,10 +89,13 @@
 		  std::identity<decltype(__VA_ARGS__)>::type
 	#endif
 
+	#define FASTCALL(TYPE)  TYPE __fastcall
+
 #elif __GNUC__>=4 && __GNUC_MINOR__ >=6
 	#define DFORCEINLINE __attribute__ ((always_inline))
 	#define DINLINE inline
 	#define COMPILER_GCC
+	#define FASTCALL(TYPE)  __attribute__((fastcall)) TYPE
 #else
 	#error "compiler not supported"
 #endif

@@ -4,6 +4,10 @@
 using namespace Sphere;
 ///////////////////////
 ///////////////////////////
+#define GBYTE 1073741824 
+SphereSurface::GLVertex* SphereSurface::vertices=NULL;
+GLushort* SphereSurface::indices=NULL;
+
 bool SphereSurface::Box::collision(const Box& box) const{
 	return
 	fabs( box.point.y - point.y ) <= (box.extents.y + extents.y) &&
@@ -74,7 +78,26 @@ void SphereSurface::Box::draw() const{
 	glColorPointer (3,  GL_FLOAT,sizeof(GLVertex),((char*)&vertices[0])+sizeof(Vec3));
 	glDrawArrays(GL_LINES, 0, vertices.size());
 }
-///////////////////////////
+//////////////////////////////////
+//////////////////////////////////
+/**
+* get sphere point
+*/
+FASTCALL(void)  SphereSurface::spherePoint(Vec3& point,int ring, int section){
+
+	float const xz_sin=sin( Math::PI * ptrSphere->getRing(ring) );
+
+	float const y = sin( -  Math::PI*0.5 + Math::PI * ptrSphere->getRing(ring));
+	
+    float const x = cos(  2*Math::PI * ptrSphere->getSection(section) ) * xz_sin;
+
+    float const z = sin(  2*Math::PI * ptrSphere->getSection(section) ) * xz_sin;
+
+	point.x=x*ptrSphere->getRadius();
+	point.y=y*ptrSphere->getRadius();
+	point.z=z*ptrSphere->getRadius();
+}
+
 void SphereSurface::buildSurface(
 				  AbstractSphere* argSphere,
 				  //start and end rings
@@ -99,9 +122,17 @@ void SphereSurface::buildSurface(
 	//range
 	int rings=eRings-sRings;
 	int sectors=eSections-sSections;
+	vertices_size=rings*sectors;
+	indices_size=rings*sectors*6;
+	//allocation	
+	if( !vertices ){
+		vertices=(GLVertex*)malloc(GBYTE*0.5);
+	}
+	if( !indices ){
+		indices=(GLushort*)malloc(GBYTE*0.5);
+	}
 	/////////////////////////////////////////////////////////
 	//set size vertex
-	vertices.resize(rings*sectors);
 	int idv=0;
 	Vec3 color(Math::random(),0,0);
 	//set vertex
@@ -115,13 +146,13 @@ void SphereSurface::buildSurface(
 	}
 	//calc box
 	//center
-	for(auto& vertice:vertices)
-		box.point+=vertice.vertex;	
-	box.point/=vertices.size();
+	for(int i=0;i<idv;++i)
+		box.point+=vertices[i].vertex;	
+	box.point/=idv;
 	//extents	
 	box.extents=-Vec3::MAX;
-	for(auto& vertice:vertices)
-		box.extents=Math::max(box.extents,(vertice.vertex-box.point).getAbs());
+	for(int i=0;i<idv;++i)
+		box.extents=Math::max(box.extents,(vertices[i].vertex-box.point).getAbs());
 
 	/*		
     *i++ = r * sectors + s;
@@ -135,18 +166,17 @@ void SphereSurface::buildSurface(
             *---*--------
             4   3
 	*/
-	indices.resize(rings * sectors * 6);
-    auto i = indices.begin();
+    int i = -1;
     for(int r = 0; r < rings-1; r++) {
 		for(int s = 0; s < sectors-1; s++) {
 			//1 2 3
-            *i++ = r * sectors + s;
-            *i++ = r * sectors + (s+1);
-            *i++ = (r+1) * sectors + (s+1);
+            indices[++i] = r * sectors + s;
+            indices[++i] = r * sectors + (s+1);
+            indices[++i] = (r+1) * sectors + (s+1);
 			//1 3 4
-            *i++ = r * sectors + s;
-            *i++ = (r+1) * sectors + (s+1);
-            *i++ = (r+1) * sectors + s;
+            indices[++i] = r * sectors + s;
+            indices[++i] = (r+1) * sectors + (s+1);
+            indices[++i] = (r+1) * sectors + s;
 		}
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,52 +184,25 @@ void SphereSurface::buildSurface(
 	if( !vertexBuffer )
 		glGenBuffers(1, &vertexBuffer );
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLVertex) * vertices_size, &vertices[0], GL_STATIC_DRAW);
 	if( !indexBuffer )
 		glGenBuffers(1, &indexBuffer );		
 	glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(ushort) * indices.size(), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(ushort) * indices_size, &indices[0], GL_STATIC_DRAW);
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-}
-/**
-* get sphere point
-*/
-void SphereSurface::spherePoint(Vec3& point,int ring, int section){
-
-	float const y = sin( -  Math::PI/2. + Math::PI * ptrSphere->getRing(ring));
-
-    float const x = cos(  2*Math::PI * ptrSphere->getSection(section)) *
-					sin( Math::PI * ptrSphere->getRing(ring) );
-
-    float const z = sin(  2*Math::PI * ptrSphere->getSection(section)) * 
-			        sin( Math::PI * ptrSphere->getRing(ring) );
-
-	point.x=x*ptrSphere->getRadius();
-	point.y=y*ptrSphere->getRadius();
-	point.z=z*ptrSphere->getRadius();
 }
 /**
 * draw sphere surface
 */
-void SphereSurface::draw(bool vao){
-	//
-	if(vao){
-		glBindBuffer( GL_ARRAY_BUFFER, 0 );
-		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 ); 
-		glVertexPointer(3,  GL_FLOAT,sizeof(GLVertex),&vertices[0]);
-		glColorPointer (3,  GL_FLOAT,sizeof(GLVertex),((char*)&vertices[0])+sizeof(Vec3));
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
-	}
+void SphereSurface::draw(){
 	//vbo
-	else if(vertexBuffer && indexBuffer){
-		//bind VBO
-		glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
-		//set vertex
-		glVertexPointer(3, GL_FLOAT, sizeof(GLVertex), 0 );
-		glColorPointer(3, GL_FLOAT, sizeof(GLVertex), (void*)sizeof(Vec3) );
-		//bind IBO
-		glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, indexBuffer ); 
-		//draw
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_SHORT, 0);
-	}
+	//bind VBO
+	glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer );
+	//set vertex
+	glVertexPointer(3, GL_FLOAT, sizeof(GLVertex), 0 );
+	glColorPointer(3, GL_FLOAT, sizeof(GLVertex), (void*)sizeof(Vec3) );
+	//bind IBO
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, indexBuffer ); 
+	//draw
+	glDrawElements(GL_TRIANGLES, indices_size, GL_UNSIGNED_SHORT, 0);
 }

@@ -24,17 +24,20 @@ namespace Sphere {
 					:vertex(values[0],values[1],values[2])
 					,color(color){}
 		};
-
-		std::vector<GLVertex> vertices;
-		std::vector<GLushort> indices;
+		//static buffer
+		static GLVertex* vertices;
+		static GLushort* indices;
+		//
 		AbstractSphere *ptrSphere;
-
 		//start and end rings
 		int sRings;
 		int eRings;
 		//start and end sections
 		int sSections;
 		int eSections;
+		//size buffers
+		int vertices_size;
+		int indices_size;
 		//buffer in GPU
 		uint vertexBuffer;
 		uint indexBuffer;
@@ -95,23 +98,21 @@ namespace Sphere {
 		/**
 		* get sphere point
 		*/
-		void spherePoint(Vec3& point,int ring, int section);
+		FASTCALL(void) spherePoint(Vec3& point,int ring, int section);
 		/**
 		* draw sphere surface
 		*/
-		void draw(bool vao=false);
+		void draw();
 		/**
 		* release cpu memory
 		*/
-		void clearCPUMemory(){
+		static void clearCPUMemory(){
 			//force clear
-			vertices.clear();
-			vertices.resize(0);
-			vertices.shrink_to_fit();
+			if(vertices) free(vertices);
+			vertices=NULL;
 			//force clear
-			indices.clear();
-			indices.resize(0);
-			indices.shrink_to_fit();
+			if(indices) free(indices);
+			indices=NULL;
 		}
 
 	};
